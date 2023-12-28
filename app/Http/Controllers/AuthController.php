@@ -7,19 +7,17 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 
 class AuthController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
     public function register(Request $request)
     {
         $input = $request->all();
-        
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'patronymic' => ['required', 'string', 'max:100'],
@@ -44,4 +42,23 @@ class AuthController extends Controller
             'password' => Hash::make($input['password']),
         ]);
     }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+ 
+        if (Auth::attempt($credentials)) {
+            $token = $request->user()->createToken('token123');
+ 
+            return ['token' => $token->plainTextToken];
+        }
+ 
+        return response()->json([
+            'email' => 'The provided credentials do not match our records.',
+        ], 401);
+    }
+
 }
