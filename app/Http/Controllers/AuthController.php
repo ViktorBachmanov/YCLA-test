@@ -46,9 +46,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['nullable', 'email'],
+            'phone' => 'exclude_unless:email,null|required|string',
             'password' => ['required'],
         ]);
+
+        if ($credentials['email'] === null) {
+            unset($credentials['email']);
+        }
  
         if (Auth::attempt($credentials)) {
             $token = $request->user()->createToken('token123');
