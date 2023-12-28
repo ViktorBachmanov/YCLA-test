@@ -1,0 +1,46 @@
+openapi: 3.0.3
+servers:
+  - url: http://ycla.local
+info:
+  title: YCLA-test
+  version: 1.0.11
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /api/test:
+    get:
+      summary: ''
+      description: ''
+      operationId: ''
+      security:
+        - bearerAuth: []
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/login:
+    post:
+      summary: ''
+      description: ''
+      operationId: ''
+      requestBody:
+        description: Log in
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        default:
+          description: Default error sample response
