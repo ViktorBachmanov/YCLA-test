@@ -1,15 +1,84 @@
 openapi: 3.0.3
+
 servers:
   - url: http://ycla.local
+  
 info:
   title: YCLA-test
   version: 1.0.11
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
+  
 paths:
+  
+  /api/register:
+    post:
+      summary: ''
+      description: ''
+      operationId: ''
+      requestBody:
+        description: Register
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - patronymic
+                - family
+                - phone
+                - email
+                - password
+                - password_confirmation
+              properties:
+                name:
+                  type: string
+                patronymic:
+                  type: string
+                family:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              schema:
+                type: object
+          
+  /api/login:
+    post:
+      summary: ''
+      description: ''
+      operationId: ''
+      requestBody:
+        description: Log in
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              schema:
+                type: object
+          
+          
   /api/test:
     get:
       summary: ''
@@ -24,23 +93,9 @@ paths:
             application/json:
               schema:
                 type: string
-  /api/login:
-    post:
-      summary: ''
-      description: ''
-      operationId: ''
-      requestBody:
-        description: Log in
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [email, password]
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-      responses:
-        default:
-          description: Default error sample response
+                
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
