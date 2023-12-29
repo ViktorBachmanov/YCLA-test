@@ -3,10 +3,11 @@
 namespace App\Models\Enums;
 
 
-enum Option: string
+enum OptionEnum: string
 {
     case Color = 'color';
     case Weight = 'weight';
     case Width = 'width';
     case Height = 'height';
+    case Decor = 'decor';
 }

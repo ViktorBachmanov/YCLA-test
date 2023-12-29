@@ -3,7 +3,7 @@
 namespace App\Models\Enums;
 
 
-enum Color: string
+enum ColorEnum: string
 {
     case White = 'white';
     case Black = 'black';

@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 use Illuminate\Support\Arr;
 
-use App\Models\Enums\Option as OptionEnum;
-use App\Models\Enums\Color as ColorEnum;
+use App\Models\Enums\OptionEnum;
+use App\Models\Enums\ColorEnum;
 
 
 /**
@@ -42,7 +42,8 @@ class OptionFactory extends Factory
                 OptionEnum::Color => Arr::random(ColorEnum::cases()),
                 OptionEnum::Weight => random_int(1, 100),
                 OptionEnum::Width => random_int(20, 500),
-                OptionEnum::Height => random_int(10, 400)
+                OptionEnum::Height => random_int(10, 400),
+                OptionEnum::Decor => (bool) random_int(0, 1)
             };
         };
 
