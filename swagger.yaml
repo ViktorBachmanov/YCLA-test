@@ -1,14 +1,10 @@
 openapi: 3.0.3
-
 servers:
   - url: http://ycla.local
-  
 info:
   title: YCLA-test
   version: 1.0.11
-  
 paths:
-  
   /api/register:
     post:
       summary: ''
@@ -50,7 +46,6 @@ paths:
             application/json:
               schema:
                 type: object
-          
   /api/login:
     post:
       summary: ''
@@ -63,11 +58,15 @@ paths:
             schema:
               type: object
               required:
-                - email
+                - email | phone
                 - password
               properties:
                 email:
                   type: string
+                  default: ''
+                phone:
+                  type: string
+                  default: ''
                 password:
                   type: string
       responses:
@@ -77,8 +76,29 @@ paths:
             application/json:
               schema:
                 type: object
-          
-          
+                
+  /api/products:
+    get:
+      summary: ''
+      description: ''
+      operationId: ''
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          description: Current page
+          schema:
+            type: integer
+            example: 1
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              schema:
+                type: object
+                
   /api/test:
     get:
       summary: ''
@@ -93,7 +113,7 @@ paths:
             application/json:
               schema:
                 type: string
-                
+          
 components:
   securitySchemes:
     bearerAuth:
