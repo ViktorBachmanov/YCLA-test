@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         $nameFilter = $request->input('name');
 
-        return ProductResource::collection(Product::getFilteredProducts($nameFilter)->paginate(5));
+        return ProductResource::collection(Product::getFilteredProducts($nameFilter)->paginate(40));
     }
 
     /**

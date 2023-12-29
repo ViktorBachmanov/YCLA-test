@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
     {
         $user = Product::factory()
             ->has(Option::factory())
-            ->count(10)
+            ->count(250)
             ->create();
     }
 }
