@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Product;
 use App\Http\Resources\ProductResource;
@@ -13,9 +14,11 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return ProductResource::collection(Product::with(['options'])->paginate(5));
+        $nameFilter = $request->input('name');
+
+        return ProductResource::collection(Product::getFilteredProducts($nameFilter)->paginate(5));
     }
 
     /**
