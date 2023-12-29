@@ -1,5 +1,6 @@
 openapi: 3.0.3
 servers:
+  - url: https://demo.cnc-op.ru:444
   - url: http://ycla.local
 info:
   title: YCLA-test
