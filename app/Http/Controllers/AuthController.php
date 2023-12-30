@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Validation\ValidationException;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -46,23 +48,51 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['nullable', 'email'],
-            'phone' => 'exclude_unless:email,null|required|string',
             'password' => ['required'],
         ]);
 
-        if ($credentials['email'] === null) {
-            unset($credentials['email']);
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+
+        $authSuccess = false;
+        $checkedFieldName = '';
+
+        if (!$email && !$phone) {
+            abort(400, 'You must provide email or phone');
+        } else if ($email && !$phone) {
+            $checkedFieldName = 'email';
+            $credentials += $request->validate([$checkedFieldName => 'email']);
+            $authSuccess = Auth::attempt($credentials);
+        } else if (!$email && $phone) {
+            $checkedFieldName = 'phone';
+            $credentials += $request->validate([$checkedFieldName => 'string']);
+            $authSuccess = Auth::attempt($credentials);
+        } else if ($email && $phone) {
+            try {
+                $credentials += $request->validate(['email' => 'email']); 
+                $authSuccess = Auth::attempt($credentials);
+            } catch (ValidationException) {
+                // do nothing
+            } finally {
+                if (!$authSuccess) {
+                    $credentials += $request->validate(['phone' => 'string']);
+
+                    unset($credentials['email']);
+
+                    $authSuccess = Auth::attempt($credentials);
+                }   
+                $checkedFieldName = 'email phone';         
+            }
         }
  
-        if (Auth::attempt($credentials)) {
+        if ($authSuccess) {
             $token = $request->user()->createToken('token123');
  
             return ['token' => $token->plainTextToken];
         }
  
         return response()->json([
-            'email' => 'The provided credentials do not match our records.',
+            $checkedFieldName => 'The provided credentials do not match our records.',
         ], 401);
     }
 
